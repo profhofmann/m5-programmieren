@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lernzielkontrolle VL02 · Programmieren</title>
+<meta name="description" content="Interaktive Lernzielkontrolle zu VL02 (Datentypen, Operatoren, Ausdrücke) und VL02.1 (Verzweigungen und Schleifen mit Karel) im Modul M5 Programmieren, THWS.">
+<style>
+  :root {
+    --thws-orange: #FF6A00;
+    --thws-orange-hover: #D95A00;
+    --thws-navy: #002B49;
+    --thws-navy-dark: #001A2C;
+    --bg: #F8FAFC;
+    --card: #FFFFFF;
+    --text: #0F172A;
+    --muted: #475569;
+    --border: #E2E8F0;
+    --success: #10B981;
+    --success-bg: #ECFDF5;
+    --success-text: #065F46;
+    --error: #EF4444;
+    --error-bg: #FEF2F2;
+    --error-text: #991B1B;
+    --amber: #F59E0B;
+    --amber-bg: #FFFBEB;
+    --amber-border: #FDE68A;
+    --blue-bg: #F0F7FF;
+    --blue-border: #BAE6FD;
+    --radius: 12px;
+    --shadow: 0 4px 20px -2px rgba(0, 43, 73, 0.08);
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+  }
+  code, pre { font-family: var(--mono); }
+  code { background: #EEF2F7; padding: 1px 6px; border-radius: 4px; font-size: 0.92em; }
+  pre {
+    background: var(--thws-navy-dark);
+    color: #E2E8F0;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0.75rem 0;
+  }
+  pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+  pre .c { color: #94A3B8; }
+  pre .k { color: #FCA5A5; }
+  pre .o { color: #FDE68A; }
+
+  /* Layout */
+  .brandband { background: #fff; border-bottom: 1px solid var(--border); }
+  .brandband-inner {
+    max-width: 1040px; margin: 0 auto; padding: 0.75rem 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  .brandband img { height: 84px; width: auto; display: block; }
+  .brandband .module { text-align: right; font-size: 0.85rem; color: var(--muted); line-height: 1.35; }
+  .brandband .module b { display: block; color: var(--thws-navy); font-size: 0.95rem; }
+  @media (max-width: 560px) { .brandband img { height: 48px; } .brandband .module { display: none; } }
+  .topbar {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--thws-navy);
+    color: #fff;
+    border-bottom: 4px solid var(--thws-orange);
+  }
+  .topbar-inner {
+    max-width: 1040px; margin: 0 auto; padding: 0.6rem 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+  .topbar .brand { font-weight: 700; letter-spacing: 0.3px; font-size: 0.95rem; }
+  .topbar .brand span { color: #94A3B8; font-weight: 500; }
+  .topbar nav { display: flex; gap: 0.25rem; flex-wrap: wrap; }
+  .topbar nav a {
+    color: #fff; text-decoration: none; font-size: 0.85rem; font-weight: 600;
+    padding: 0.3rem 0.7rem; border-radius: 6px;
+  }
+  .topbar nav a:hover { background: rgba(255,255,255,0.12); }
+  .topbar nav a.part { background: var(--thws-orange); }
+  .topbar nav a.part:hover { background: var(--thws-orange-hover); }
+
+  main { max-width: 1040px; margin: 0 auto; padding: 1.5rem 16px 4rem; }
+
+  .hero {
+    background: linear-gradient(135deg, var(--thws-navy) 0%, var(--thws-navy-dark) 100%);
+    color: #fff;
+    padding: 2.25rem 2rem;
+    border-radius: var(--radius);
+    border-left: 6px solid var(--thws-orange);
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+  }
+  .hero .kicker { text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.75rem; color: #FFB380; font-weight: 700; margin: 0 0 0.5rem; }
+  .hero h1 { margin: 0 0 0.5rem; font-size: clamp(1.6rem, 3.5vw, 2.3rem); line-height: 1.15; }
+  .hero p { color: #CBD5E1; margin: 0.4rem 0; max-width: 70ch; }
+  .hero .meta { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.25rem; font-size: 0.85rem; color: #94A3B8; }
+  .hero .meta b { color: #fff; display: block; font-size: 0.95rem; }
+
+  h2 {
+    color: var(--thws-navy);
+    font-size: 1.5rem;
+    margin: 2.75rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 3px solid var(--thws-orange);
+  }
+  h2 .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2rem; height: 2rem; border-radius: 6px;
+    background: var(--thws-navy); color: #fff; font-size: 1rem; margin-right: 0.6rem;
+    vertical-align: middle;
+  }
+  h3 { color: var(--thws-navy); font-size: 1.15rem; margin: 1.75rem 0 0.5rem; }
+  .part-head {
+    margin: 3.5rem 0 1rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 6px solid var(--thws-orange);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  .part-head .kicker { text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.72rem; color: var(--thws-orange); font-weight: 700; margin: 0; }
+  .part-head h2 { border: none; margin: 0.2rem 0 0.3rem; padding: 0; font-size: 1.6rem; }
+  .part-head p { margin: 0; color: var(--muted); }
+  .lead { color: var(--muted); margin: 0 0 1rem; }
+
+  /* Lernziele */
+  .goals { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .goal {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1rem 1.25rem; box-shadow: var(--shadow);
+  }
+  .goal h4 { margin: 0 0 0.5rem; color: var(--thws-navy); font-size: 1rem; }
+  .goal ul { margin: 0; padding-left: 1.1rem; font-size: 0.93rem; color: var(--muted); }
+
+  /* Flip cards */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin: 1.25rem 0; }
+  .flip { perspective: 1000px; min-height: 230px; cursor: pointer; }
+  .flip-inner {
+    position: relative; width: 100%; min-height: 230px; height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+  .flip.flipped .flip-inner { transform: rotateY(180deg); }
+  .flip-front, .flip-back {
+    position: absolute; inset: 0;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 1.25rem; display: flex; flex-direction: column; justify-content: center;
+  }
+  .flip-front {
+    background: linear-gradient(135deg, var(--thws-navy) 0%, var(--thws-navy-dark) 100%);
+    color: #fff; text-align: center; align-items: center;
+    border-top: 5px solid var(--thws-orange);
+  }
+  .flip-front h4 { margin: 0; font-size: 1.1rem; color: #fff; }
+  .flip-front .hint { font-size: 0.72rem; margin-top: 0.75rem; background: rgba(255,106,0,0.5); padding: 3px 10px; border-radius: 12px; letter-spacing: 0.5px; }
+  .flip-back {
+    background: var(--card); border: 2px solid var(--thws-orange);
+    transform: rotateY(180deg); font-size: 0.92rem; line-height: 1.5;
+  }
+  .flip-back p { margin: 0 0 0.4rem; }
+  .flip-back code { font-size: 0.85em; }
+
+  /* Details / Deep dive */
+  details {
+    background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+    margin: 0.75rem 0; box-shadow: 0 2px 4px rgba(0,0,0,0.03); overflow: hidden;
+  }
+  summary {
+    list-style: none; cursor: pointer; font-weight: 700; color: var(--thws-navy);
+    padding: 0.9rem 1rem 0.9rem 2.6rem; position: relative; background: rgba(255,106,0,0.05);
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "▶"; position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+    color: var(--thws-orange); font-size: 0.8rem; transition: transform 0.25s;
+  }
+  details[open] summary::before { transform: translateY(-50%) rotate(90deg); }
+  details[open] summary { border-bottom: 1px solid var(--border); }
+  .details-body { padding: 1rem 1.25rem 1rem 2.6rem; }
+  .details-body ul { margin: 0.25rem 0; padding-left: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.92rem; margin: 0.5rem 0; background: #fff; }
+  th, td { border: 1px solid var(--border); padding: 0.45rem 0.7rem; text-align: left; vertical-align: top; }
+  th { background: #EEF2F7; color: var(--thws-navy); }
+
+  /* Prediction (Interpreter) */
+  .predict {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1.25rem; box-shadow: var(--shadow); margin: 1rem 0;
+  }
+  .predict-row {
+    display: grid; grid-template-columns: minmax(140px, 1fr) minmax(120px, 1fr) auto; gap: 0.75rem; align-items: center;
+    padding: 0.55rem 0; border-bottom: 1px dashed var(--border);
+  }
+  .predict-row:last-of-type { border-bottom: none; }
+  .predict-row .expr { font-family: var(--mono); font-size: 0.95rem; }
+  .predict-row .expr::before { content: ">>> "; color: var(--muted); }
+  .predict-row input {
+    font-family: var(--mono); font-size: 0.95rem; padding: 0.45rem 0.6rem;
+    border: 2px solid var(--border); border-radius: 6px; width: 100%;
+  }
+  .predict-row input:focus { outline: none; border-color: var(--thws-orange); }
+  .predict-row input.ok { border-color: var(--success); background: var(--success-bg); }
+  .predict-row input.bad { border-color: var(--error); background: var(--error-bg); }
+  .predict-row .why { font-size: 0.82rem; color: var(--muted); grid-column: 1 / -1; display: none; margin-top: -0.25rem; }
+  .predict-row.revealed .why { display: block; }
+  .predict-row .why b.ans { font-family: var(--mono); color: var(--thws-navy); }
+  .predict-actions { display: flex; gap: 0.6rem; margin-top: 1rem; flex-wrap: wrap; align-items: center; }
+  .predict-score { font-weight: 600; color: var(--muted); font-size: 0.9rem; margin-left: auto; }
+  @media (max-width: 560px) { .predict-row { grid-template-columns: 1fr; } }
+
+  /* Buttons */
+  .btn {
+    padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; font-size: 0.92rem;
+    cursor: pointer; border: none; transition: all 0.2s; font-family: inherit;
+  }
+  .btn.primary { background: var(--thws-orange); color: #fff; }
+  .btn.primary:hover { background: var(--thws-orange-hover); box-shadow: 0 4px 12px rgba(255,106,0,0.3); }
+  .btn.secondary { background: #E2E8F0; color: var(--thws-navy); }
+  .btn.secondary:hover { background: #CBD5E1; }
+  .btn.outline { background: transparent; border: 2px solid var(--thws-navy); color: var(--thws-navy); }
+  .btn.outline:hover { background: var(--thws-navy); color: #fff; }
+
+  /* Case study */
+  .case {
+    background: var(--blue-bg); border: 1px solid var(--blue-border); border-left: 5px solid var(--thws-navy);
+    border-radius: var(--radius); padding: 1.25rem 1.5rem; margin: 1.25rem 0;
+  }
+  .case h4 { margin: 0 0 0.5rem; color: var(--thws-navy); }
+  .case textarea {
+    width: 100%; min-height: 110px; margin: 0.75rem 0 0.5rem; padding: 0.7rem; font-family: inherit; font-size: 0.95rem;
+    border: 1px solid #93C5FD; border-radius: 8px; resize: vertical; background: #fff;
+  }
+  .case .solution {
+    display: none; background: #fff; border: 1px dashed #93C5FD; border-radius: 8px; padding: 1rem 1.25rem; margin-top: 0.75rem;
+  }
+  .case .solution.show { display: block; animation: fadeIn 0.3s; }
+  .case .solution ol, .case .solution ul { padding-left: 1.2rem; margin: 0.3rem 0; }
+
+  /* Gap text */
+  .gap-ex {
+    background: var(--amber-bg); border: 1px solid var(--amber-border); border-left: 5px solid var(--amber);
+    border-radius: var(--radius); padding: 1.25rem; margin: 1.25rem 0; font-size: 1.02rem;
+  }
+  .gap-ex .gap-text { line-height: 2.1; }
+  .gap {
+    display: inline-block; min-width: 110px; height: 1.9em; vertical-align: middle; line-height: 1.8em;
+    border: 2px dashed var(--amber); border-radius: 6px; background: #fff; padding: 0 0.6rem; margin: 0 0.15rem;
+    text-align: center; cursor: pointer; font-weight: 600; font-family: var(--mono); font-size: 0.92em;
+  }
+  .gap.filled { border-style: solid; color: #B45309; }
+  .gap.ok { border-color: var(--success); background: var(--success-bg); color: var(--success-text); }
+  .gap.bad { border-color: var(--error); background: var(--error-bg); color: var(--error-text); }
+  .pool { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.9rem 0; }
+  .pool button {
+    font-family: var(--mono); font-weight: 600; font-size: 0.9rem; padding: 0.35rem 0.8rem; border-radius: 6px;
+    border: 2px solid var(--amber); background: #fff; color: #B45309; cursor: pointer;
+  }
+  .pool button.selected { background: var(--amber); color: #fff; }
+  .pool button.used { opacity: 0.3; cursor: default; }
+  .gap-result { font-size: 0.9rem; color: var(--muted); margin-left: 0.75rem; font-weight: 600; }
+
+  /* Quick check */
+  .qc {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1.25rem 1.5rem; margin: 1rem 0; box-shadow: var(--shadow);
+  }
+  .qc .q { font-weight: 600; color: var(--thws-navy); margin: 0 0 0.9rem; }
+  .qc .q small { display: block; font-weight: 500; color: var(--muted); font-size: 0.8rem; margin-bottom: 0.2rem; }
+  .qc pre { margin: 0.5rem 0 0.9rem; }
+  .qc .opts { display: flex; flex-direction: column; gap: 0.6rem; }
+  .qc .opt {
+    display: flex; align-items: center; gap: 0.9rem; width: 100%; text-align: left;
+    background: #F8FAFC; border: 2px solid var(--border); border-radius: 10px;
+    padding: 0.75rem 1rem; font-size: 0.97rem; color: var(--text); cursor: pointer; transition: all 0.2s; font-family: inherit;
+  }
+  .qc .opt code { background: #E2E8F0; }
+  .qc .opt:hover:not(:disabled) { border-color: var(--thws-orange); background: #FFF4EC; transform: translateX(4px); }
+  .qc .opt .pre {
+    flex-shrink: 0; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center;
+    background: #E2E8F0; color: var(--thws-navy); font-weight: 700; border-radius: 6px;
+  }
+  .qc .opt:hover:not(:disabled) .pre { background: var(--thws-orange); color: #fff; }
+  .qc .opt:disabled { cursor: default; }
+  .qc .opt.correct { border-color: var(--success) !important; background: var(--success-bg) !important; }
+  .qc .opt.correct .pre { background: var(--success); color: #fff; }
+  .qc .opt.wrong { border-color: var(--error) !important; background: var(--error-bg) !important; }
+  .qc .opt.wrong .pre { background: var(--error); color: #fff; }
+  .qc .opt.dim { opacity: 0.85; }
+  .qc .fb { display: none; margin-top: 1rem; padding: 0.9rem 1.1rem; border-radius: 8px; font-size: 0.93rem; animation: fadeIn 0.3s; }
+  .qc .fb.ok { display: block; background: var(--success-bg); border-left: 4px solid var(--success); color: var(--success-text); }
+  .qc .fb.no { display: block; background: var(--error-bg); border-left: 4px solid var(--error); color: var(--error-text); }
+
+  /* Result */
+  .result {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 2rem; text-align: center; box-shadow: var(--shadow); margin: 1.5rem 0;
+  }
+  .score-circle {
+    width: 140px; height: 140px; border-radius: 50%; margin: 1rem auto;
+    background: linear-gradient(135deg, var(--thws-navy) 0%, var(--thws-orange) 100%);
+    color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 8px 24px rgba(0,43,73,0.2);
+  }
+  .score-circle .n { font-size: 1.7rem; font-weight: 800; line-height: 1; }
+  .score-circle .p { font-size: 0.85rem; opacity: 0.9; margin-top: 0.3rem; }
+  .result .breakdown { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin: 1rem 0; color: var(--muted); font-size: 0.92rem; }
+  .result .breakdown b { color: var(--thws-navy); display: block; font-size: 1.2rem; }
+  .result .verdict { max-width: 60ch; margin: 0.5rem auto 1rem; }
+
+  footer { max-width: 1040px; margin: 0 auto; padding: 1.5rem 16px 3rem; color: var(--muted); font-size: 0.82rem; border-top: 1px solid var(--border); }
+  footer p { margin: 0.3rem 0; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .flip-inner { transition: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<div class="brandband">
+  <div class="brandband-inner">
+    <img src="img/fab-thws-logo.png" alt="fab.thws – Fakultät Architektur und Bauingenieurwesen, Technische Hochschule Würzburg-Schweinfurt">
+    <div class="module"><b>Modul M5 · Programmieren</b>Lernzielkontrolle VL02 / VL02.1 · WS 26/27</div>
+  </div>
+</div>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">M5 Programmieren <span>· Lernzielkontrolle</span></div>
+    <nav>
+      <a href="#teil-a" class="part">Teil A · VL02</a>
+      <a href="#teil-b" class="part">Teil B · VL02.1</a>
+      <a href="#ergebnis">Ergebnis</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <p class="kicker">Modul M5 · Vorlesung 02 und 02.1 · Selbstlern-Quiz</p>
+  <h1>Lernzielkontrolle: Datentypen, Operatoren, Ausdrücke – Verzweigungen und Schleifen</h1>
+  <p>Diese Seite prüft, ob die Inhalte von VL02 (Grundlagen in Python) und VL02.1 (Kontrollstrukturen mit Karel) sitzen. Erst selbst beantworten, dann aufdecken. Eine Python-Installation ist dafür nicht nötig – alle Antworten lassen sich aus den Folien herleiten. Sobald Python eingerichtet ist, gilt zusätzlich: Jede Zeile im Interpreter nachrechnen – der Interpreter irrt nie.</p>
+  <div class="meta">
+    <div><b>Bearbeitungszeit</b>ca. 30–40 Minuten</div>
+    <div><b>Hilfsmittel</b>keine Installation nötig; Folien erst nach dem eigenen Versuch</div>
+    <div><b>Dozent</b>Prof. Christian Hofmann · FAB</div>
+  </div>
+</section>
+
+<h2><span class="num">0</span>Lernziele – das sollten Sie nach VL02 und VL02.1 können</h2>
+<div class="goals">
+  <div class="goal">
+    <h4>VL02 · Daten</h4>
+    <ul>
+      <li>Variable, Wert und Typ (<code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>) unterscheiden</li>
+      <li>Gültige und sprechende Variablennamen bilden (PEP 8)</li>
+      <li><code>/</code>, <code>//</code> und <code>%</code> korrekt einsetzen und begründen</li>
+    </ul>
+  </div>
+  <div class="goal">
+    <h4>VL02 · Ausdrücke</h4>
+    <ul>
+      <li>Ausdrücke in Operanden und Operatoren zerlegen, Stelligkeit und Stellung benennen</li>
+      <li>Rangfolge der Operatoren anwenden, Vorzeichen vs. Potenz</li>
+      <li>Zuweisung, Vergleich und logische Verknüpfung auseinanderhalten; Typabhängigkeit erklären</li>
+    </ul>
+  </div>
+  <div class="goal">
+    <h4>VL02.1 · Kontrollstrukturen</h4>
+    <ul>
+      <li><code>if</code>, <code>if-else</code>, <code>else if</code>, <code>while</code> und <code>repeat</code> situationsgerecht wählen</li>
+      <li>Typische Fehler erkennen: zwei <code>if</code> statt <code>if-else</code>, Endlosschleife, Zaunpfahl-Problem</li>
+      <li>Ein Karel-Programm im Schreibtischtest durchspielen</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================================================= TEIL A -->
+<div class="part-head" id="teil-a">
+  <p class="kicker">Teil A</p>
+  <h2>VL02 · Datentypen, Operatoren, Ausdrücke</h2>
+  <p>Programme = Daten + Algorithmen. Heute die Daten: Werte, Typen, Variablen, Operatoren, Ausdrücke – in Python.</p>
+</div>
+
+<h2><span class="num">1</span>Kernbegriffe (Flip-Cards)</h2>
+<p class="lead">Erst die Frage auf der Vorderseite beantworten, dann durch Klick wenden.</p>
+<div class="grid">
+  <div class="flip"><div class="flip-inner">
+    <div class="flip-front"><h4>Was ist ein Ausdruck (expression)?</h4><span class="hint">↻ KLICKEN</span></div>
+    <div class="flip-back"><p>Eine Kombination aus <b>Operanden</b> (Konstanten, Variablen, Funktionsaufrufe, Teilausdrücke) und <b>Operatoren</b>. Ein Ausdruck liefert <b>immer einen Wert</b>, z. B. <code>3.5 * x - 2 / (4 + y)</code>. Eine Anweisung dagegen <i>tut</i> etwas (<code>x = 5</code>, <code>print(x)</code>).</p></div>
+  </div></div>
+  <div class="flip"><div class="flip-inner">
+    <div class="flip-front"><h4>Variable, Wert, Typ – wie hängen sie zusammen?</h4><span class="hint">↻ KLICKEN</span></div>
+    <div class="flip-back"><p>Eine Variable ist ein benannter Platzhalter für einen Wert. Python ermittelt den <b>Typ aus dem Wert</b>, nicht aus einer Deklaration (dynamisch typisiert). <code>type(12)</code> → <code>int</code>, <code>type(3.25)</code> → <code>float</code>, <code>type("EG")</code> → <code>str</code>, <code>type(True)</code> → <code>bool</code>.</p></div>
+  </div></div>
+  <div class="flip"><div class="flip-inner">
+    <div class="flip-front"><h4>Was legt ein Datentyp fest?</h4><span class="hint">↻ KLICKEN</span></div>
+    <div class="flip-back"><p>Wie Werte im Speicher dargestellt werden, <b>welche Operationen erlaubt</b> sind und welche Standardwerte gelten. Dieselben Bits können Zahl, Zeichen oder Wahrheitswert sein – deshalb ist <code>+</code> bei Zahlen eine Addition, bei Zeichenketten eine Verkettung.</p></div>
+  </div></div>
+  <div class="flip"><div class="flip-inner">
+    <div class="flip-front"><h4>/, // und % – was ist der Unterschied?</h4><span class="hint">↻ KLICKEN</span></div>
+    <div class="flip-back"><p><code>/</code> liefert <b>immer float</b> (<code>7 / 2</code> → <code>3.5</code>). <code>//</code> ist die ganzzahlige Division, <b>abgerundet</b> (<code>7 // 2</code> → <code>3</code>, <code>-7 // 2</code> → <code>-4</code>). <code>%</code> liefert den Rest (<code>7 % 2</code> → <code>1</code>). Zusammenhang: <code>(a // b) * b + a % b == a</code>.</p></div>
+  </div></div>
+  <div class="flip"><div class="flip-inner">
+    <div class="flip-front"><h4>Rangfolge: Was wird zuerst ausgewertet?</h4><span class="hint">↻ KLICKEN</span></div>
+    <div class="flip-back"><p>Klammern → Potenz <code>**</code> (von rechts) → Vorzeichen → Punktrechnung <code>* / // %</code> → Strichrechnung → Vergleiche → <code>not</code> → <code>and</code> → <code>or</code>. Deshalb <code>-2 ** 2</code> = <code>-4</code> und <code>2 ** 3 ** 2</code> = <code>512</code>. Im Zweifel: Klammern setzen.</p></div>
+  </div></div>
+  <div class="flip"><div class="flip-inner">
+    <div class="flip-front"><h4>Woran erkennt Python einen Block?</h4><span class="hint">↻ KLICKEN</span></div>
+    <div class="flip-back"><p>An der <b>Einrückung</b>. Der Doppelpunkt eröffnet den Block, alle folgenden gleich eingerückten Zeilen (üblich: 4 Leerzeichen) gehören dazu. Was nicht eingerückt ist, liegt außerhalb. Java und C verwenden dafür <code>{ }</code>. Einrückung ist Syntax, nicht Kosmetik.</p></div>
+  </div></div>
+</div>
+
+<h2><span class="num">2</span>Deep Dives</h2>
+<details>
+  <summary>Deep Dive 1: Stelligkeit und Stellung von Operatoren</summary>
+  <div class="details-body">
+    <table>
+      <tr><th>Stelligkeit</th><th>Operanden</th><th>Beispiele</th></tr>
+      <tr><td>einstellig (unär)</td><td>1</td><td><code>-a</code>, <code>+a</code>, <code>not traegt</code></td></tr>
+      <tr><td>zweistellig (binär)</td><td>2</td><td><code>a + b</code>, <code>a &lt; b</code>, <code>a and b</code></td></tr>
+      <tr><td>dreistellig (ternär)</td><td>3</td><td><code>groesser = a if a &gt; b else b</code> (Java/C: <code>(a &gt; b) ? a : b</code>)</td></tr>
+    </table>
+    <ul>
+      <li><b>Präfix:</b> Operator vor dem Operanden – <code>-a</code>, <code>not fertig</code>, auch Funktionsaufrufe <code>abs(x)</code>.</li>
+      <li><b>Infix:</b> Operator zwischen den Operanden – <code>a + b</code>, der Normalfall.</li>
+      <li><b>Postfix:</b> Operator nach dem Operanden – <code>n++</code> in Java/C. <b>In Python nicht vorhanden</b>: <code>n += 1</code>.</li>
+    </ul>
+  </div>
+</details>
+<details>
+  <summary>Deep Dive 2: Warum 4.35 % 0.6 nicht 0.15 ergibt</summary>
+  <div class="details-body">
+    <p>Gleitkommazahlen werden binär gespeichert und sind nicht exakt. <code>4.35 % 0.6</code> liefert <code>0.1499999999999998</code>, und <code>0.1 + 0.2 == 0.3</code> ist <code>False</code>.</p>
+    <ul>
+      <li>Für Stückzahlen und Reste: <b>ganze Zahlen in der kleinsten Einheit</b> verwenden – Zentimeter statt Meter, wie im Aufmaß. <code>435 % 60</code> → <code>15</code>, exakt.</li>
+      <li>Reelle Werte nie exakt vergleichen, sondern mit Toleranz (VL04).</li>
+      <li>Wer den falschen Operator wählt, bekommt keine Fehlermeldung, sondern ein <b>falsches Ergebnis ohne Warnung</b>.</li>
+    </ul>
+  </div>
+</details>
+<details>
+  <summary>Deep Dive 3: Zuweisung, Vergleich, logische Verknüpfung</summary>
+  <div class="details-body">
+    <ul>
+      <li><code>=</code> ist ein <b>Befehl</b>: rechts berechnen, links speichern. In Python eine Anweisung, kein Ausdruck – <code>y = (x = 5)</code> ist ungültig (in Java/C erlaubt).</li>
+      <li><code>==</code> ist ein <b>Vergleich</b> und liefert <code>True</code> oder <code>False</code>. Die Verwechslung ist der häufigste Anfängerfehler.</li>
+      <li>Kombinierte Zuweisung: <code>x += 3</code> entspricht <code>x = x + 3</code>; ebenso <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>//=</code>, <code>%=</code>, <code>**=</code>.</li>
+      <li>Logische Operatoren heißen in Python <code>and</code>, <code>or</code>, <code>not</code> (Java/C: <code>&amp;&amp;</code>, <code>||</code>, <code>!</code>).</li>
+      <li><b>Kurzschluss:</b> Bei <code>a and b</code> wird <code>b</code> nicht mehr ausgewertet, wenn <code>a</code> schon <code>False</code> ist – spart Rechenzeit und vermeidet z. B. eine Division durch null.</li>
+      <li>Verkettete Vergleiche sind erlaubt: <code>0 &lt; x &lt;= 10</code>.</li>
+    </ul>
+  </div>
+</details>
+<details>
+  <summary>Deep Dive 4: Variablennamen – Regeln und Konventionen</summary>
+  <div class="details-body">
+    <p><b>Regeln (Python erzwingt sie):</b> Buchstaben, Ziffern, Unterstrich; nicht mit Ziffer beginnen (<code>1stock</code> ungültig); Groß-/Kleinschreibung wird unterschieden (<code>last</code> ≠ <code>Last</code>); Schlüsselwörter sind tabu (<code>if</code>, <code>for</code>, <code>while</code>, <code>class</code>, <code>def</code>, <code>True</code> …).</p>
+    <p><b>Konventionen (PEP 8):</b> <code>snake_case</code> für Variablen (<code>raum_laenge_m</code>), <code>GROSSBUCHSTABEN</code> für Konstanten (<code>G_ERDBESCHL = 9.81</code>), Name nennt Inhalt und Einheit. Umlaute sind technisch erlaubt, aber unüblich.</p>
+  </div>
+</details>
+
+<h2><span class="num">3</span>Python als Taschenrechner – erst schätzen, dann prüfen</h2>
+<p class="lead">Tragen Sie ein, was der Interpreter ausgeben würde – genau so, wie Python es anzeigt (z. B. <code>3.5</code>, <code>'34'</code>, <code>True</code>). Die Seite prüft Ihre Eingabe; eine Python-Installation ist nicht nötig. Wer nachrechnen will, kann wie in der Vorlesung die Online-Shell unter python.org/shell verwenden.</p>
+<div class="predict" id="predict-a">
+  <div class="predict-row" data-answers="3.5"><span class="expr">7 / 2</span><input type="text" autocomplete="off" spellcheck="false" placeholder="Ergebnis"><span></span><span class="why"><b class="ans"></b> – <code>/</code> liefert immer eine Gleitkommazahl, auch bei zwei ganzen Zahlen.</span></div>
+  <div class="predict-row" data-answers="3"><span class="expr">7 // 2</span><input type="text" autocomplete="off" spellcheck="false" placeholder="Ergebnis"><span></span><span class="why"><b class="ans"></b> – ganzzahlige Division, abgerundet.</span></div>
+  <div class="predict-row" data-answers="1"><span class="expr">7 % 2</span><input type="text" autocomplete="off" spellcheck="false" placeholder="Ergebnis"><span></span><span class="why"><b class="ans"></b> – Rest der ganzzahligen Division: 3 · 2 + 1 = 7.</span></div>
+  <div class="predict-row" data-answers="-4"><span class="expr">-7 // 2</span><input type="text" autocomplete="off" spellcheck="false" placeholder="Ergebnis"><span></span><span class="why"><b class="ans"></b> – <code>//</code> rundet immer ab, also Richtung minus unendlich: −3,5 → −4 (nicht −3).</span></div>
+  <div class="predict-row" data-answers="-4"><span class="expr">-2 ** 2</span><input type="text" autocomplete="off" spellcheck="false" placeholder="Ergebnis"><span></span><span class="why"><b class="ans"></b> – Potenz vor Vorzeichen: erst 2² = 4, dann negiert. Für +4: <code>(-2) ** 2</code>.</span></div>
+  <div class="predict-row" data-answers="14"><span class="expr">2 + 3 * 4</span><input type="text" autocomplete="off" spellcheck="false" placeholder="Ergebnis"><span></span><span class="why"><b class="ans"></b> – Punkt vor Strich; <code>(2 + 3) * 4</code> wäre 20.</span></div>
+  <div class="predict-row" data-answers="5.0"><span class="expr">10 / 4 * 2</span><input type="text" autocomplete="off" spellcheck="false" placeholder="Ergebnis"><span></span><span class="why"><b class="ans"></b> – gleiche Rangstufe, von links nach rechts: 2.5 · 2. Ergebnis ist float, daher <code>5.0</code>, nicht <code>5</code>.</span></div>
+  <div class="predict-row" data-answers="512"><span class="expr">2 ** 3 ** 2</span><input type="text" autocomplete="off" spellcheck="false" placeholder="Ergebnis"><span></span><span class="why"><b class="ans"></b> – Potenz wird von rechts ausgewertet: 2 ** 9.</span></div>
+  <div class="predict-row" data-answers="'34'|&quot;34&quot;"><span class="expr">"3" + "4"</span><input type="text" autocomplete="off" spellcheck="false" placeholder="Ergebnis"><span></span><span class="why"><b class="ans"></b> – <code>+</code> bei Zeichenketten verkettet; Python zeigt Zeichenketten in Anführungszeichen an.</span></div>
+  <div class="predict-row" data-answers="False"><span class="expr">3 &gt; 2 and 2 &gt; 3</span><input type="text" autocomplete="off" spellcheck="false" placeholder="Ergebnis"><span></span><span class="why"><b class="ans"></b> – <code>and</code> ist nur wahr, wenn beide Operanden wahr sind. Großschreibung beachten.</span></div>
+  <div class="predict-row" data-answers="False"><span class="expr">0.1 + 0.2 == 0.3</span><input type="text" autocomplete="off" spellcheck="false" placeholder="Ergebnis"><span></span><span class="why"><b class="ans"></b> – Gleitkommazahlen sind binär nicht exakt darstellbar; 0.1 + 0.2 ergibt 0.30000000000000004.</span></div>
+  <div class="predict-row" data-answers="<class 'float'>|float"><span class="expr">type(7 / 7)</span><input type="text" autocomplete="off" spellcheck="false" placeholder="Ergebnis"><span></span><span class="why"><b class="ans"></b> – <code>/</code> liefert float, auch wenn das Ergebnis „glatt“ ist (<code>1.0</code>).</span></div>
+  <div class="predict-actions">
+    <button class="btn primary" data-action="check">Prüfen</button>
+    <button class="btn secondary" data-action="reveal">Lösungen anzeigen</button>
+    <button class="btn outline" data-action="reset">Zurücksetzen</button>
+    <span class="predict-score"></span>
+  </div>
+</div>
+
+<h2><span class="num">4</span>Fallstudien und Reflexion</h2>
+<p class="lead">Erst die eigene Antwort notieren, dann die Lösung aufdecken. Die Notiz bleibt stehen, damit Sie vergleichen können.</p>
+
+<div class="case">
+  <h4>Fallbeispiel A: Plattenverlegung in Metern</h4>
+  <p>Eine Studentin berechnet für einen 4,35 m langen Flur mit 60 cm breiten Platten die Anzahl der ganzen Platten und die Breite des Passstücks:</p>
+<pre><code>flur_m = 4.35
+platte_m = 0.6
+ganze = flur_m // platte_m      <span class="c"># 7.0</span>
+pass_m = flur_m % platte_m      <span class="c"># 0.1499999999999998</span></code></pre>
+  <p>Die Anzahl stimmt, das Passstück nicht. Erklären Sie die Ursache und schlagen Sie eine robuste Lösung vor.</p>
+  <div class="solution">
+    <b>Lösung:</b>
+    <ol>
+      <li><b>Ursache:</b> 4.35 und 0.6 sind Gleitkommazahlen und binär nicht exakt darstellbar. Rest- und Vergleichsoperationen auf <code>float</code> liefern deshalb Rundungsfehler – hier 0.1499999… statt 0.15.</li>
+      <li><b>Lösung:</b> In der kleinsten ganzzahligen Einheit rechnen, wie im Aufmaß: <code>flur_cm = 435</code>, <code>platte_cm = 60</code>, <code>435 // 60</code> → <code>7</code>, <code>435 % 60</code> → <code>15</code>. Beide Ergebnisse sind exakt und vom Typ <code>int</code>.</li>
+      <li><b>Merkregel:</b> Stückzahlen und Reste → ganze Zahlen und <code>//</code>, <code>%</code>. Längen, Lasten, Flächen → <code>float</code> und <code>/</code>. Nie exakt auf Gleichheit vergleichen.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="case">
+  <h4>Fallbeispiel B: Code-Review eines KI-Vorschlags</h4>
+  <p>Ein Sprachmodell liefert auf die Frage „Zähle die Stützen hoch und prüfe die Spannweite“ folgenden Python-Code. Finden Sie alle Stellen, an denen der Code <b>nicht</b> Python ist oder nicht das tut, was er soll:</p>
+<pre><code>stuetzen = 12
+stuetzen++
+spannweite_m = 6.5
+if spannweite_m = 6:
+    print("Unterzug nötig")
+nachweis = last_kn &lt;= n_cr_kn &amp;&amp; schlankheit &lt;= 200</code></pre>
+  <div class="solution">
+    <b>Lösung – vier Befunde:</b>
+    <ol>
+      <li><code>stuetzen++</code>: Postfix-Inkrement existiert in Python nicht (Java/C-Syntax) → <code>SyntaxError</code>. Richtig: <code>stuetzen += 1</code>.</li>
+      <li><code>if spannweite_m = 6:</code>: <code>=</code> ist die Zuweisung, in einer Bedingung ist ein Vergleich nötig → <code>SyntaxError</code>. Richtig: <code>==</code>; fachlich wohl <code>&gt;</code> gemeint („Spannweite über 6 m braucht Unterzug“).</li>
+      <li><code>&amp;&amp;</code>: logisches Und heißt in Python <code>and</code>.</li>
+      <li><code>last_kn</code>, <code>n_cr_kn</code>, <code>schlankheit</code> sind nirgends zugewiesen → <code>NameError</code> zur Laufzeit.</li>
+    </ol>
+    <p>Regel für dieses Modul: Jede KI-Antwort mit Code wird im Interpreter ausgeführt, bevor sie als richtig gilt. Wer <code>++</code> oder <code>&amp;&amp;</code> sieht, weiß, dass der Code nicht aus Python stammt.</p>
+  </div>
+</div>
+
+<div class="case">
+  <h4>Fallbeispiel C: Mengenermittlung Beton</h4>
+  <p>Welchen Wert gibt das Programm aus, und welchen Typ hat <code>beton_m3</code> am Ende? Begründen Sie Zeile für Zeile.</p>
+<pre><code>beton_m3 = 0.0
+beton_m3 += 12.5     <span class="c"># Bodenplatte</span>
+beton_m3 += 8        <span class="c"># Streifenfundamente</span>
+beton_m3 *= 1.05     <span class="c"># 5 % Verschnitt</span>
+print(beton_m3)</code></pre>
+  <div class="solution">
+    <b>Lösung:</b> Ausgabe <code>21.525000000000002</code>, Typ <code>float</code>.
+    <ul>
+      <li><code>0.0</code> legt den Typ <code>float</code> fest. <code>+= 12.5</code> → 12.5. <code>+= 8</code>: int und float lassen sich mischen, Ergebnis bleibt float → 20.5. <code>*= 1.05</code> → rechnerisch 21.525.</li>
+      <li>Der Interpreter zeigt aber <code>21.525000000000002</code>: 1.05 ist binär nicht exakt darstellbar (siehe Deep Dive 2). Wer 21.525 erwartet hat, hat richtig gerechnet – und sieht hier, warum Gleitkommazahlen nie exakt verglichen und für die Ausgabe gerundet werden (<code>round(beton_m3, 3)</code>, VL04).</li>
+      <li>Hätte die erste Zeile <code>beton_m3 = 0</code> gelautet, wäre der Typ nach <code>+= 12.5</code> trotzdem float – der Typ hängt am Wert, nicht am Namen.</li>
+    </ul>
+  </div>
+</div>
+
+<h2><span class="num">5</span>Lückentext – Active Recall</h2>
+<p class="lead">Begriff im Vorrat anklicken, dann die passende Lücke anklicken. Ein Klick auf eine gefüllte Lücke gibt den Begriff zurück.</p>
+<div class="gap-ex">
+  <div class="gap-text">In Python liefert der Operator <em>/</em> immer eine Gleitkommazahl, <em>//</em> die abgerundete ganzzahlige Division und <em>%</em> den Rest. Jeder Vergleich ist ein Ausdruck vom Typ <em>bool</em>. Die Zuweisung <em>=</em> speichert einen Wert, der Vergleich <em>==</em> prüft auf Gleichheit. Zusammengehörige Anweisungen bilden einen Block durch <em>Einrückung</em>. Das Inkrement <em>++</em> gibt es in Python nicht; man schreibt <em>+= 1</em>.</div>
+</div>
+<div class="gap-ex">
+  <div class="gap-text">Python ist <em>dynamisch</em> typisiert: Der Typ hängt am <em>Wert</em>, nicht am Namen. <code>1 + "2"</code> löst einen <em>TypeError</em> aus, <code>"1" + "2"</code> ergibt <em>"12"</em>. Die Potenz <code>**</code> wird <em>vor</em> dem Vorzeichen ausgewertet, deshalb ist <code>-2 ** 2</code> gleich <em>-4</em>. Konstanten schreibt man nach PEP 8 in <em>GROSSBUCHSTABEN</em>, Variablen in <em>snake_case</em>.</div>
+</div>
+
+<h2><span class="num">6</span>Quick-Check VL02</h2>
+<p class="lead">Eine Antwort ist richtig. Nach dem Klick erscheint die Erklärung.</p>
+
+<div class="qc" data-part="a">
+  <p class="q"><small>Variablennamen</small>Welcher dieser Variablennamen ist in Python <b>ungültig</b>?</p>
+  <ul>
+    <li><code>raum_laenge_m</code></li>
+    <li><code>G_ERDBESCHL</code></li>
+    <li><b><code>1stock</code></b></li>
+    <li><code>stock1</code></li>
+  </ul>
+  <blockquote>Ein Name darf nicht mit einer Ziffer beginnen. Ziffern sind nur an späterer Stelle erlaubt. Groß-/Kleinschreibung ist erlaubt, Schlüsselwörter wie <code>if</code> oder <code>class</code> sind tabu.</blockquote>
+</div>
+
+<div class="qc" data-part="a">
+  <p class="q"><small>Datentypen</small>Was ergibt <code>type(7 // 2)</code> und was <code>type(7 / 2)</code>?</p>
+  <ul>
+    <li><code>int</code> und <code>int</code></li>
+    <li><b><code>int</code> und <code>float</code></b></li>
+    <li><code>float</code> und <code>float</code></li>
+    <li><code>float</code> und <code>int</code></li>
+  </ul>
+  <blockquote><code>//</code> liefert bei zwei ganzen Zahlen eine ganze Zahl (3). <code>/</code> liefert in Python 3 immer eine Gleitkommazahl (3.5), unabhängig von den Operanden.</blockquote>
+</div>
+
+<div class="qc" data-part="a">
+  <p class="q"><small>Typabhängigkeit</small>Was passiert bei <code>1 + "2"</code>?</p>
+  <ul>
+    <li>Ergebnis <code>3</code> – Python wandelt automatisch um.</li>
+    <li>Ergebnis <code>'12'</code> – die Zahl wird zur Zeichenkette.</li>
+    <li><b>Ein <code>TypeError</code> – Zahl und Zeichenkette lassen sich nicht addieren.</b></li>
+    <li>Ergebnis <code>12</code> – die Zeichenkette wird zur Zahl.</li>
+  </ul>
+  <blockquote>Python rät nicht. Erst umwandeln, dann rechnen: <code>1 + int("2")</code> → 3. Wichtig bei jeder Eingabe, denn <code>input()</code> liefert immer eine Zeichenkette.</blockquote>
+</div>
+
+<div class="qc" data-part="a">
+  <p class="q"><small>Rangfolge</small>Welchen Wert hat <code>7 // 2 * 2 + 7 % 2</code>?</p>
+  <ul>
+    <li><code>6</code></li>
+    <li><b><code>7</code></b></li>
+    <li><code>8</code></li>
+    <li><code>3.5</code></li>
+  </ul>
+  <blockquote>Punktrechnung von links nach rechts: 7 // 2 = 3, 3 * 2 = 6, 7 % 2 = 1, dann 6 + 1 = 7. Das ist die Identität <code>(a // b) * b + a % b == a</code>.</blockquote>
+</div>
+
+<div class="qc" data-part="a">
+  <p class="q"><small>Zuweisung</small>Warum ist <code>y = (x = 5)</code> in Python ungültig?</p>
+  <ul>
+    <li>Weil Klammern in Zuweisungen verboten sind.</li>
+    <li><b>Weil die Zuweisung in Python eine Anweisung und kein Ausdruck ist – sie liefert keinen Wert.</b></li>
+    <li>Weil <code>x</code> vorher nicht deklariert wurde.</li>
+    <li>Die Zeile ist gültig und weist beiden Variablen 5 zu.</li>
+  </ul>
+  <blockquote>In Java und C ist die Zuweisung ein Ausdruck mit Wert, deshalb geht dort <code>y = (x = 5)</code>. In Python schreibt man <code>x = y = 5</code> oder zwei Zeilen.</blockquote>
+</div>
+
+<div class="qc" data-part="a">
+  <p class="q"><small>Stelligkeit</small>Welcher Ausdruck enthält einen <b>dreistelligen</b> (ternären) Operator?</p>
+  <ul>
+    <li><code>not traegt</code></li>
+    <li><code>a + b + c</code></li>
+    <li><b><code>groesser = a if a &gt; b else b</code></b></li>
+    <li><code>abs(x)</code></li>
+  </ul>
+  <blockquote>Der bedingte Ausdruck <code>… if … else …</code> hat drei Operanden. <code>a + b + c</code> sind zwei binäre Operatoren hintereinander, <code>not</code> ist unär, <code>abs()</code> ein Funktionsaufruf in Präfix-Schreibweise.</blockquote>
+</div>
+
+<div class="qc" data-part="a">
+  <p class="q"><small>Logische Operatoren</small>Was bedeutet „Kurzschluss“ bei <code>a and b</code>?</p>
+  <ul>
+    <li>Das Programm bricht mit einem Fehler ab, wenn <code>a</code> False ist.</li>
+    <li><b>Ist <code>a</code> bereits False, wird <code>b</code> gar nicht mehr ausgewertet.</b></li>
+    <li>Beide Operanden werden immer ausgewertet, aber das Ergebnis wird zwischengespeichert.</li>
+    <li><code>and</code> wird zu <code>or</code>, wenn <code>a</code> False ist.</li>
+  </ul>
+  <blockquote>Das Ergebnis steht bei <code>a == False</code> schon fest. Das spart Rechenzeit und vermeidet Fehler, z. B. <code>n != 0 and summe / n &gt; 10</code> – die Division wird bei n = 0 nie ausgeführt.</blockquote>
+</div>
+
+<div class="qc" data-part="a">
+  <p class="q"><small>Vergleich</small>Was gibt dieses Programm aus?</p>
+<pre><code>spannweite_m = 6.5
+braucht_unterzug = spannweite_m &gt; 6
+print(braucht_unterzug)</code></pre>
+  <ul>
+    <li><code>6.5</code></li>
+    <li><code>1</code></li>
+    <li><b><code>True</code></b></li>
+    <li>Einen <code>SyntaxError</code>, weil in einer Zuweisung kein Vergleich stehen darf.</li>
+  </ul>
+  <blockquote>Ein Vergleich ist ein Ausdruck vom Typ <code>bool</code> und darf überall stehen, wo ein Wert erwartet wird – auch rechts von <code>=</code>. Das ist die Grundlage jeder Verzweigung.</blockquote>
+</div>
+
+<div class="qc" data-part="a">
+  <p class="q"><small>Anweisung und Block</small>Welche Aussage zu Blöcken in Python ist richtig?</p>
+  <ul>
+    <li>Blöcke werden durch geschweifte Klammern <code>{ }</code> begrenzt.</li>
+    <li>Jede Anweisung muss mit einem Semikolon enden.</li>
+    <li><b>Ein Doppelpunkt eröffnet den Block, die Zugehörigkeit ergibt sich aus der Einrückung.</b></li>
+    <li>Tabulatoren und Leerzeichen dürfen beliebig gemischt werden.</li>
+  </ul>
+  <blockquote>Einrückung ist Syntax. Java/C nutzen <code>{ }</code> und Semikolons; Python nicht. Tab und Leerzeichen nicht mischen – das führt zu Fehlern.</blockquote>
+</div>
+
+<!-- ========================================================= TEIL B -->
+<div class="part-head" id="teil-b">
+  <p class="kicker">Teil B</p>
+  <h2>VL02.1 · Verzweigungen und Schleifen mit Karel</h2>
+  <p>Sequenz, Verzweigung, Wiederholung: Mit diesen drei Kontrollstrukturen lässt sich jeder Algorithmus beschreiben. In Karel ist jede Entscheidung in der Welt sichtbar.</p>
+</div>
+
+<h2><span class="num">1</span>Kernbegriffe (Flip-Cards)</h2>
+<div class="grid">
+  <div class="flip"><div class="flip-inner">
+    <div class="flip-front"><h4>Was ist eine Bedingung in Karel?</h4><span class="hint">↻ KLICKEN</span></div>
+    <div class="flip-back"><p>Ein Ausdruck vom Typ <code>boolean</code> – liefert immer <code>true</code> oder <code>false</code>. Karel kennt fünf Sensoren: <code>onBeeper()</code>, <code>beeperAhead()</code>, <code>frontIsClear()</code>, <code>leftIsClear()</code>, <code>rightIsClear()</code>. Kombiniert mit <code>!</code>, <code>&amp;&amp;</code>, <code>||</code> (Python: <code>not</code>, <code>and</code>, <code>or</code>).</p></div>
+  </div></div>
+  <div class="flip"><div class="flip-inner">
+    <div class="flip-front"><h4>if – wann, und was passiert sonst?</h4><span class="hint">↻ KLICKEN</span></div>
+    <div class="flip-back"><p><b>Einseitige Verzweigung:</b> Der Block wird nur ausgeführt, wenn die Bedingung zutrifft, sonst übersprungen. Typischer Einsatz: eine Aktion absichern, die nur unter einer Voraussetzung erlaubt ist – <code>pickBeeper()</code> auf einem leeren Feld bricht mit Fehler ab.</p></div>
+  </div></div>
+  <div class="flip"><div class="flip-inner">
+    <div class="flip-front"><h4>if-else und else if – worin liegt der Unterschied?</h4><span class="hint">↻ KLICKEN</span></div>
+    <div class="flip-back"><p><b>if-else:</b> zwei Wege, Karel geht immer genau einen – nie keinen, nie beide. <b>else if:</b> mehrere Bedingungen werden von oben nach unten geprüft, <b>die erste zutreffende gewinnt</b>, die weiteren werden nicht mehr geprüft. In Python: <code>elif</code>.</p></div>
+  </div></div>
+  <div class="flip"><div class="flip-inner">
+    <div class="flip-front"><h4>while – wann wird die Bedingung geprüft?</h4><span class="hint">↻ KLICKEN</span></div>
+    <div class="flip-back"><p><b>Vor jedem Durchlauf.</b> Ist sie beim ersten Prüfen schon <code>false</code>, läuft der Block kein einziges Mal. Einsatz, wenn die Anzahl der Wiederholungen vorher unbekannt ist: <code>while (frontIsClear()) { moveForward(); }</code> funktioniert für 3 und für 30 Felder.</p></div>
+  </div></div>
+  <div class="flip"><div class="flip-inner">
+    <div class="flip-front"><h4>repeat oder while?</h4><span class="hint">↻ KLICKEN</span></div>
+    <div class="flip-back"><p><code>repeat (n)</code>: Die Anzahl steht vorher fest – <code>repeat (4) { turnLeft(); }</code> ist eine volle Drehung. <code>while</code>: Die Anzahl hängt von der Situation in der Welt ab. Kontrollfrage bei jeder while-Schleife: Was im Block bringt Karel dem Ende näher?</p></div>
+  </div></div>
+  <div class="flip"><div class="flip-inner">
+    <div class="flip-front"><h4>Was ist das Zaunpfahl-Problem?</h4><span class="hint">↻ KLICKEN</span></div>
+    <div class="flip-back"><p>Ein Zaun mit 5 Feldern hat 6 Pfähle: Es gibt <b>eine Prüfung mehr als Bewegungen</b>. <code>while (frontIsClear())</code> prüft jedes Feld und geht weiter – das letzte Feld vor der Wand wird in der Schleife nie geprüft. Lösung: ein zusätzliches <code>if</code> nach der Schleife. Erstes und letztes Feld immer gezielt durchspielen.</p></div>
+  </div></div>
+</div>
+
+<h2><span class="num">2</span>Deep Dives</h2>
+<details>
+  <summary>Deep Dive 1: Kontrollstrukturen im Überblick</summary>
+  <div class="details-body">
+    <table>
+      <tr><th>Konstrukt</th><th>Prüft</th><th>Führt aus</th><th>Beispiel</th></tr>
+      <tr><td><code>if</code></td><td>einmal</td><td>den Block höchstens einmal</td><td>Beeper aufheben, falls vorhanden</td></tr>
+      <tr><td><code>if-else</code></td><td>einmal</td><td>genau einen von zwei Blöcken</td><td>Feld invertieren</td></tr>
+      <tr><td><code>else if</code></td><td>nacheinander, bis eine zutrifft</td><td>genau einen von mehreren Blöcken</td><td>Rechte-Hand-Regel</td></tr>
+      <tr><td><code>repeat (n)</code></td><td>gar nicht</td><td>den Block genau n-mal</td><td>volle Drehung: <code>repeat (4)</code></td></tr>
+      <tr><td><code>while</code></td><td>vor jedem Durchlauf</td><td>solange true – eventuell nie</td><td>bis zur Wand laufen</td></tr>
+    </table>
+    <p>Merksätze: if – „Soll ich das tun?“ · if-else – „Das oder das?“ · else if – „Der erste passende Fall gewinnt.“ · while – „Solange es nötig ist.“</p>
+  </div>
+</details>
+<details>
+  <summary>Deep Dive 2: Zwei if statt if-else – warum das schiefgeht</summary>
+  <div class="details-body">
+<pre><code><span class="c">// FALSCH</span>
+if (onBeeper()) { pickBeeper(); }
+if (!onBeeper()) { dropBeeper(); }
+
+<span class="c">// RICHTIG</span>
+if (onBeeper()) { pickBeeper(); } else { dropBeeper(); }</code></pre>
+    <ul>
+      <li>Zwei getrennte <code>if</code> sind zwei unabhängige Prüfungen. Die zweite sieht den <b>bereits veränderten Zustand</b>: Beeper da → erstes if hebt ihn auf → Feld leer → zweites if legt ihn wieder ab. Ergebnis: nichts hat sich verändert.</li>
+      <li><code>if-else</code> prüft die Bedingung genau einmal und entscheidet endgültig.</li>
+      <li>Merksatz: Schließen sich zwei Fälle gegenseitig aus, gehört <code>else</code> dazu – kein zweites <code>if</code>.</li>
+    </ul>
+  </div>
+</details>
+<details>
+  <summary>Deep Dive 3: Rechte-Hand-Regel und Reihenfolge der Bedingungen</summary>
+  <div class="details-body">
+<pre><code>if (rightIsClear()) {
+    turnRight();
+    moveForward();
+} else if (frontIsClear()) {
+    moveForward();
+} else if (leftIsClear()) {
+    turnLeft();
+    moveForward();
+} else {
+    turnAround();   <span class="c">// Sackgasse</span>
+}</code></pre>
+    <ul>
+      <li>Wer im Labyrinth immer die rechte Hand an der Wand lässt, findet aus jedem einfach zusammenhängenden Labyrinth hinaus.</li>
+      <li>Sind rechts <b>und</b> vorne frei, wird nur der erste Fall ausgeführt. Die <b>Reihenfolge ist Programmlogik</b>: Steht <code>frontIsClear()</code> oben, nimmt Karel einen anderen Weg.</li>
+      <li>Das abschließende <code>else</code> fängt den Rest ab – hier die Sackgasse.</li>
+    </ul>
+  </div>
+</details>
+<details>
+  <summary>Deep Dive 4: Von Karel zu Python</summary>
+  <div class="details-body">
+    <table>
+      <tr><th>Karel (Java-Syntax)</th><th>Python</th></tr>
+      <tr><td><code>if (bedingung) { … }</code></td><td><code>if bedingung:</code> + eingerückter Block</td></tr>
+      <tr><td><code>else if (…) { … }</code></td><td><code>elif …:</code></td></tr>
+      <tr><td><code>while (bedingung) { … }</code></td><td><code>while bedingung:</code></td></tr>
+      <tr><td><code>!</code>, <code>&amp;&amp;</code>, <code>||</code></td><td><code>not</code>, <code>and</code>, <code>or</code></td></tr>
+      <tr><td><code>true</code>, <code>false</code></td><td><code>True</code>, <code>False</code></td></tr>
+      <tr><td><code>repeat (4) { … }</code></td><td><code>for i in range(4):</code> (VL03)</td></tr>
+    </table>
+  </div>
+</details>
+
+<h2><span class="num">3</span>Schreibtischtest – was macht Karel?</h2>
+<p class="lead">Spielen Sie den Code von Hand durch. Karel steht auf Feld 1, blickt nach Osten, am Ende der Reihe ist eine Wand. <b>B</b> = Beeper liegt, <b>_</b> = leer.</p>
+
+<div class="qc" data-part="b">
+  <p class="q"><small>Schreibtischtest 1</small>Reihe mit 5 Feldern: <code>B _ B _ B</code>. Wie sieht die Reihe nach dem Lauf aus?</p>
+<pre><code>while (frontIsClear()) {
+    if (onBeeper()) {
+        pickBeeper();
+    }
+    moveForward();
+}</code></pre>
+  <ul>
+    <li><code>_ _ _ _ _</code> – alle Beeper sind aufgehoben.</li>
+    <li><b><code>_ _ _ _ B</code> – der Beeper auf dem letzten Feld bleibt liegen.</b></li>
+    <li><code>B _ B _ B</code> – nichts verändert sich.</li>
+    <li><code>_ _ B _ B</code> – die Schleife bricht nach zwei Durchläufen ab.</li>
+  </ul>
+  <blockquote>Zaunpfahl-Problem: Die Schleife läuft viermal (prüfen, Schritt). Auf Feld 5 steht Karel vor der Wand, <code>frontIsClear()</code> ist false, das Feld wird in der Schleife nie geprüft. Lösung: <code>if (onBeeper()) { pickBeeper(); }</code> nach der Schleife.</blockquote>
+</div>
+
+<div class="qc" data-part="b">
+  <p class="q"><small>Schreibtischtest 2</small>Reihe mit 4 Feldern: <code>_ B _ _</code>. Wie sieht die Reihe nach <code>fillGaps()</code> aus?</p>
+<pre><code>void fillGaps() {
+    while (frontIsClear()) {
+        moveForward();
+        if (!onBeeper()) {
+            dropBeeper();
+        }
+    }
+}</code></pre>
+  <ul>
+    <li><code>B B B B</code> – alle Lücken sind geschlossen.</li>
+    <li><b><code>_ B B B</code> – Feld 1 bleibt leer.</b></li>
+    <li><code>B B B _</code> – Feld 4 bleibt leer.</li>
+    <li><code>_ B _ _</code> – nichts verändert sich.</li>
+  </ul>
+  <blockquote>Erst Schritt, dann Prüfung: Karel verlässt Feld 1, ohne es anzusehen. Felder 2 bis 4 werden nach dem jeweiligen Schritt geprüft – auch das letzte, weil der Schritt dorthin noch in der Schleife liegt. Reihenfolge im Block ist Programmlogik: Prüfung vor dem Schritt plus ein if nach der Schleife (Musterlösung), oder Schritt vor der Prüfung plus ein if <b>vor</b> der Schleife.</blockquote>
+</div>
+
+<div class="qc" data-part="b">
+  <p class="q"><small>Schreibtischtest 3</small>Karel steht auf einem Feld <b>mit</b> Beeper. Was passiert?</p>
+<pre><code>while (onBeeper()) {
+    turnLeft();
+}
+moveForward();</code></pre>
+  <ul>
+    <li>Karel dreht sich einmal nach links und geht dann weiter.</li>
+    <li>Karel dreht sich viermal, steht wieder in Ausgangsrichtung und geht weiter.</li>
+    <li><b>Karel dreht sich endlos – das Programm endet nie.</b></li>
+    <li>Das Programm bricht mit einem Fehler ab, weil der Beeper nicht aufgehoben wird.</li>
+  </ul>
+  <blockquote>Endlosschleife: Drehen ändert nichts daran, ob ein Beeper auf dem Feld liegt. Die Bedingung bleibt true. Kontrollfrage vor jeder Schleife: Was im Block bringt Karel dem Ende näher? Hier: nichts.</blockquote>
+</div>
+
+<h2><span class="num">4</span>Fallstudien und Reflexion</h2>
+
+<div class="case">
+  <h4>Fallbeispiel D: Reihenfolge in der Rechte-Hand-Regel</h4>
+  <p>Eine Studentin schreibt die Rechte-Hand-Regel um und setzt <code>frontIsClear()</code> an die erste Stelle, weil Karel „ja meistens geradeaus geht“:</p>
+<pre><code>if (frontIsClear()) {
+    moveForward();
+} else if (rightIsClear()) {
+    turnRight(); moveForward();
+} else if (leftIsClear()) {
+    turnLeft(); moveForward();
+} else {
+    turnAround();
+}</code></pre>
+  <p>Karel steht in einem Gang, rechts geht ein Abzweig ab, geradeaus ist frei. Was passiert jetzt im Vergleich zur Originalversion, und ist das Programm noch eine Rechte-Hand-Regel?</p>
+  <div class="solution">
+    <b>Lösung:</b>
+    <ol>
+      <li>Bei <code>else if</code> gewinnt die <b>erste zutreffende</b> Bedingung. Da vorne frei ist, geht Karel geradeaus und ignoriert den rechten Abzweig. Die Originalversion wäre rechts abgebogen.</li>
+      <li>Das Programm ist damit <b>keine Rechte-Hand-Regel</b> mehr, sondern „geradeaus, solange möglich“. Die Garantie, aus einem einfach zusammenhängenden Labyrinth herauszufinden, gilt nicht mehr – Karel kann in Zyklen laufen.</li>
+      <li>Merksatz: Die Reihenfolge der Bedingungen ist Programmlogik, nicht Stil. Jede Umsortierung ist eine Änderung des Algorithmus.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="case">
+  <h4>Fallbeispiel E: Vom Feld-Invertieren zur Reihe</h4>
+  <p>Gegeben ist das Programm aus VL02.1, das ein einzelnes Feld invertiert (Beeper weg, wenn einer da ist, sonst einen hinlegen). Erweitern Sie es so, dass <b>jedes Feld einer Reihe unbekannter Länge</b> invertiert wird. Notieren Sie Ihren Code und prüfen Sie ihn für die Reihen <code>B _ B</code> und <code>_ _ _ _</code>.</p>
+<pre><code>if (onBeeper()) {
+    pickBeeper();
+} else {
+    dropBeeper();
+}</code></pre>
+  <div class="solution">
+    <b>Musterlösung:</b>
+<pre><code>void invertRow() {
+    while (frontIsClear()) {
+        if (onBeeper()) {
+            pickBeeper();
+        } else {
+            dropBeeper();
+        }
+        moveForward();
+    }
+    if (onBeeper()) {      <span class="c">// letztes Feld</span>
+        pickBeeper();
+    } else {
+        dropBeeper();
+    }
+}</code></pre>
+    <ul>
+      <li><code>B _ B</code> → <code>_ B _</code>; <code>_ _ _ _</code> → <code>B B B B</code>.</li>
+      <li><b>Bewertungskriterien:</b> while statt fester Schrittfolge (Länge unbekannt); if-else statt zwei if (Fälle schließen sich aus); letztes Feld behandelt (Zaunpfahl); keine überflüssigen Anweisungen.</li>
+      <li>Typische Fehler: zwei if hintereinander (Feld bleibt unverändert), letztes Feld vergessen, erst Schritt dann Prüfung (Feld 1 bleibt unverändert).</li>
+    </ul>
+  </div>
+</div>
+
+<h2><span class="num">5</span>Lückentext – Active Recall</h2>
+<div class="gap-ex">
+  <div class="gap-text">Eine Bedingung ist ein Ausdruck vom Typ <em>boolean</em>. <em>if</em> prüft genau einmal und führt den Block höchstens einmal aus; <em>while</em> prüft <em>vor</em> jedem Durchlauf. Schließen sich zwei Fälle gegenseitig aus, gehört <em>else</em> dazu – kein zweites if. Steht die Anzahl der Wiederholungen vorher fest, ist <em>repeat</em> die richtige Wahl. Dass das letzte Feld vor der Wand in der Schleife nie geprüft wird, heißt <em>Zaunpfahl</em>-Problem. Bei <em>else if</em> gewinnt die erste zutreffende Bedingung. In Python heißt else if <em>elif</em>.</div>
+</div>
+
+<h2><span class="num">6</span>Quick-Check VL02.1</h2>
+
+<div class="qc" data-part="b">
+  <p class="q"><small>if vs. if-else</small>Wann verwenden Sie <code>if</code> ohne <code>else</code>?</p>
+  <ul>
+    <li>Wenn zwei sich ausschließende Wege möglich sind.</li>
+    <li><b>Wenn nur in einem Fall etwas zu tun ist und sonst nichts.</b></li>
+    <li>Wenn die Bedingung immer wahr ist.</li>
+    <li>Wenn die Anzahl der Durchläufe vorher feststeht.</li>
+  </ul>
+  <blockquote>Einseitige Verzweigung: Block ausführen oder überspringen. Gibt es zwei sich ausschließende Wege, gehört <code>else</code> dazu.</blockquote>
+</div>
+
+<div class="qc" data-part="b">
+  <p class="q"><small>else if</small>Bei einer <code>else if</code>-Kette treffen zwei Bedingungen gleichzeitig zu. Was passiert?</p>
+  <ul>
+    <li>Beide Blöcke werden ausgeführt.</li>
+    <li>Das Programm bricht mit einem Fehler ab.</li>
+    <li><b>Nur der Block der ersten zutreffenden Bedingung wird ausgeführt; die weiteren werden nicht mehr geprüft.</b></li>
+    <li>Der Block der letzten zutreffenden Bedingung wird ausgeführt.</li>
+  </ul>
+  <blockquote>Bedingungen werden von oben nach unten geprüft – die erste zutreffende gewinnt. Deshalb ist die Reihenfolge Programmlogik.</blockquote>
+</div>
+
+<div class="qc" data-part="b">
+  <p class="q"><small>if vs. while</small>Worin unterscheiden sich <code>if (frontIsClear()) { moveForward(); }</code> und <code>while (frontIsClear()) { moveForward(); }</code>?</p>
+  <ul>
+    <li>Gar nicht – beide bewegen Karel bis zur Wand.</li>
+    <li><b><code>if</code> macht höchstens einen Schritt, <code>while</code> geht bis zur Wand – egal wie breit die Welt ist.</b></li>
+    <li><code>if</code> prüft vor jedem Schritt, <code>while</code> nur einmal.</li>
+    <li><code>while</code> macht genau einen Schritt mehr als <code>if</code>.</li>
+  </ul>
+  <blockquote><code>if</code> prüft einmal und führt höchstens einmal aus. <code>while</code> prüft vor jedem Durchlauf und wiederholt, solange die Bedingung gilt.</blockquote>
+</div>
+
+<div class="qc" data-part="b">
+  <p class="q"><small>while</small>Die Bedingung einer <code>while</code>-Schleife ist schon beim ersten Prüfen <code>false</code>. Wie oft läuft der Block?</p>
+  <ul>
+    <li>Genau einmal – der erste Durchlauf findet immer statt.</li>
+    <li><b>Kein einziges Mal.</b></li>
+    <li>Endlos.</li>
+    <li>Das hängt vom Inhalt des Blocks ab.</li>
+  </ul>
+  <blockquote>Die Prüfung findet <b>vor</b> jedem Durchlauf statt, auch vor dem ersten. Reihe B in der Übung testet genau das: Prüfung vor dem ersten Schritt.</blockquote>
+</div>
+
+<div class="qc" data-part="b">
+  <p class="q"><small>repeat vs. while</small>Welche Aufgabe löst man sinnvoll mit <code>repeat</code> statt mit <code>while</code>?</p>
+  <ul>
+    <li>Bis zur nächsten Wand laufen.</li>
+    <li>Alle Beeper einer Reihe unbekannter Länge aufheben.</li>
+    <li><b>Eine volle Drehung um 360° ausführen.</b></li>
+    <li>Durch ein Labyrinth zum Ausgang finden.</li>
+  </ul>
+  <blockquote><code>repeat (4) { turnLeft(); }</code> – die Anzahl steht vorher fest. Bei allen anderen Aufgaben hängt die Anzahl von der Welt ab → <code>while</code>.</blockquote>
+</div>
+
+<div class="qc" data-part="b">
+  <p class="q"><small>Bedingungen kombinieren</small>Welche Bedingung bedeutet „vor mir ist keine Wand <b>und</b> auf dem Feld vor mir liegt kein Beeper“?</p>
+  <ul>
+    <li><code>frontIsClear() || !beeperAhead()</code></li>
+    <li><code>!frontIsClear() &amp;&amp; beeperAhead()</code></li>
+    <li><b><code>frontIsClear() &amp;&amp; !beeperAhead()</code></b></li>
+    <li><code>frontIsClear() and not beeperAhead()</code></li>
+  </ul>
+  <blockquote><code>&amp;&amp;</code> ist das logische Und, <code>!</code> die Verneinung. Die letzte Option ist inhaltlich richtig, aber Python-Syntax – in Karel (Java) ein Syntaxfehler.</blockquote>
+</div>
+
+<div class="qc" data-part="b">
+  <p class="q"><small>Fehlerbild</small>Warum sind zwei <code>if</code> hintereinander hier ein Fehler?</p>
+<pre><code>if (onBeeper()) { pickBeeper(); }
+if (!onBeeper()) { dropBeeper(); }</code></pre>
+  <ul>
+    <li>Weil Karel nicht zwei Bedingungen hintereinander prüfen kann.</li>
+    <li><b>Weil das zweite <code>if</code> den Zustand <i>nach</i> dem ersten sieht – beide Blöcke werden ausgeführt und heben sich auf.</b></li>
+    <li>Weil <code>!onBeeper()</code> keine gültige Bedingung ist.</li>
+    <li>Es ist kein Fehler – das Programm invertiert das Feld korrekt.</li>
+  </ul>
+  <blockquote>Beeper da → aufheben → Feld leer → wieder ablegen. Ergebnis: unverändert. <code>if-else</code> prüft einmal und entscheidet endgültig.</blockquote>
+</div>
+
+<div class="qc" data-part="b">
+  <p class="q"><small>Karel → Python</small>Wie lautet <code>else if (frontIsClear()) { moveForward(); }</code> in Python?</p>
+  <ul>
+    <li><code>else if frontIsClear(): moveForward()</code></li>
+    <li><b><code>elif frontIsClear():</code> und darunter eingerückt <code>moveForward()</code></b></li>
+    <li><code>elseif (frontIsClear()) { moveForward() }</code></li>
+    <li><code>else: if (frontIsClear()) moveForward();</code></li>
+  </ul>
+  <blockquote>Python: <code>elif</code>, Doppelpunkt, Block durch Einrückung, keine runden Klammern um die Bedingung nötig und keine geschweiften Klammern.</blockquote>
+</div>
+
+<!-- ========================================================= ERGEBNIS -->
+<h2 id="ergebnis"><span class="num">7</span>Ergebnis</h2>
+<div class="result">
+  <p class="lead">Ausgewertet werden die Quick-Checks und Schreibtischtests beider Teile sowie die Taschenrechner-Vorhersagen.</p>
+  <div class="score-circle"><div class="n" id="score-n">–</div><div class="p" id="score-p">noch nicht ausgewertet</div></div>
+  <div class="breakdown">
+    <div><b id="bd-a">–</b>Quick-Check VL02</div>
+    <div><b id="bd-b">–</b>Quick-Check VL02.1</div>
+    <div><b id="bd-c">–</b>Taschenrechner</div>
+  </div>
+  <p class="verdict" id="verdict"></p>
+  <div style="display:flex; gap:0.6rem; justify-content:center; flex-wrap:wrap;">
+    <button class="btn primary" id="btn-eval">Auswerten</button>
+    <button class="btn outline" id="btn-reset-all">Alles zurücksetzen</button>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <p><b>M5 Programmieren · Lernzielkontrolle VL02 / VL02.1</b> · Prof. M.Eng. Dipl.-Ing. (FH) Christian Hofmann · THWS, Fakultät Architektur und Bauingenieurwesen.</p>
+  <p>Nur für den Lehrgebrauch an der THWS. Grundlage: Vorlesungsmaterialien von Prof. Dr. Detlef Seese und Prof. Dr. S. Kounev (Uni Würzburg). Karel: Lernumgebung von Fred Overflow. Aufbau der Seite nach dem Vorbild der Quarto-Lernzielkontrollen von Stefan Sauer (THWS).</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Flip-Cards ----------
+  document.querySelectorAll(".flip").forEach(function (card) {
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+    var toggle = function () { card.classList.toggle("flipped"); };
+    card.addEventListener("click", toggle);
+    card.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); }
+    });
+  });
+
+  // ---------- Fallstudien: Textfeld + Lösung ----------
+  document.querySelectorAll(".case").forEach(function (box) {
+    var sol = box.querySelector(".solution");
+    if (!sol) return;
+    var ta = document.createElement("textarea");
+    ta.placeholder = "Ihre Überlegungen hier notieren …";
+    var btn = document.createElement("button");
+    btn.className = "btn primary";
+    btn.textContent = "Lösung anzeigen";
+    box.insertBefore(ta, sol);
+    box.insertBefore(btn, sol);
+    btn.addEventListener("click", function () {
+      var shown = sol.classList.toggle("show");
+      btn.textContent = shown ? "Lösung verbergen" : "Lösung anzeigen";
+    });
+  });
+
+  // ---------- Lückentext (Click-to-Select) ----------
+  document.querySelectorAll(".gap-ex").forEach(function (ex) {
+    var textEl = ex.querySelector(".gap-text");
+    var words = [];
+    var id = 0;
+    textEl.querySelectorAll("em").forEach(function (em) {
+      var w = em.textContent.trim();
+      words.push({ text: w, id: id });
+      var gap = document.createElement("span");
+      gap.className = "gap";
+      gap.dataset.answer = w;
+      gap.setAttribute("aria-label", "Lücke");
+      em.replaceWith(gap);
+      id++;
+    });
+    var pool = document.createElement("div");
+    pool.className = "pool";
+    var actions = document.createElement("div");
+    actions.style.display = "flex"; actions.style.alignItems = "center"; actions.style.flexWrap = "wrap"; actions.style.gap = "0.5rem";
+    var check = document.createElement("button");
+    check.className = "btn primary"; check.textContent = "Prüfen";
+    var reset = document.createElement("button");
+    reset.className = "btn outline"; reset.textContent = "Zurücksetzen";
+    var res = document.createElement("span"); res.className = "gap-result";
+    actions.appendChild(check); actions.appendChild(reset); actions.appendChild(res);
+    ex.appendChild(pool); ex.appendChild(actions);
+
+    var selected = null;
+    // Fisher-Yates
+    var shuffled = words.slice();
+    for (var i = shuffled.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = shuffled[i]; shuffled[i] = shuffled[j]; shuffled[j] = t;
+    }
+    shuffled.forEach(function (w) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = w.text;
+      b.dataset.id = w.id;
+      b.addEventListener("click", function () {
+        if (b.classList.contains("used")) return;
+        if (selected) selected.classList.remove("selected");
+        if (selected === b) { selected = null; return; }
+        selected = b; b.classList.add("selected");
+      });
+      pool.appendChild(b);
+    });
+
+    var gaps = ex.querySelectorAll(".gap");
+    gaps.forEach(function (gap) {
+      gap.addEventListener("click", function () {
+        if (gap.classList.contains("filled")) {
+          var orig = pool.querySelector('button[data-id="' + gap.dataset.currentId + '"]');
+          if (orig) orig.classList.remove("used");
+          gap.textContent = "";
+          gap.classList.remove("filled", "ok", "bad");
+          delete gap.dataset.currentId;
+          res.textContent = "";
+          return;
+        }
+        if (selected) {
+          gap.textContent = selected.textContent;
+          gap.classList.add("filled");
+          gap.dataset.currentId = selected.dataset.id;
+          selected.classList.remove("selected");
+          selected.classList.add("used");
+          selected = null;
+        }
+      });
+    });
+
+    check.addEventListener("click", function () {
+      var okCount = 0;
+      gaps.forEach(function (gap) {
+        if (!gap.classList.contains("filled")) { gap.classList.remove("ok", "bad"); return; }
+        var ok = gap.textContent.trim() === gap.dataset.answer;
+        gap.classList.toggle("ok", ok);
+        gap.classList.toggle("bad", !ok);
+        if (ok) okCount++;
+      });
+      res.textContent = okCount + " von " + gaps.length + " richtig";
+    });
+    reset.addEventListener("click", function () {
+      gaps.forEach(function (gap) {
+        gap.textContent = ""; gap.classList.remove("filled", "ok", "bad"); delete gap.dataset.currentId;
+      });
+      pool.querySelectorAll("button").forEach(function (b) { b.classList.remove("used", "selected"); });
+      selected = null; res.textContent = "";
+    });
+  });
+
+  // ---------- Taschenrechner-Vorhersage ----------
+  function norm(s) {
+    return s.trim().replace(/\s+/g, "").replace(/"/g, "'").toLowerCase();
+  }
+  document.querySelectorAll(".predict").forEach(function (box) {
+    var rows = box.querySelectorAll(".predict-row");
+    var scoreEl = box.querySelector(".predict-score");
+    rows.forEach(function (row) {
+      var answers = row.dataset.answers.split("|");
+      row.querySelector(".why .ans").textContent = answers[0];
+      var input = row.querySelector("input");
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") { e.preventDefault(); evaluate(true); }
+      });
+    });
+    function evaluate(silent) {
+      var correct = 0, filled = 0;
+      rows.forEach(function (row) {
+        var input = row.querySelector("input");
+        var answers = row.dataset.answers.split("|").map(norm);
+        var val = norm(input.value);
+        input.classList.remove("ok", "bad");
+        if (!val) return;
+        filled++;
+        var ok = answers.indexOf(val) !== -1;
+        input.classList.add(ok ? "ok" : "bad");
+        row.classList.add("revealed");
+        if (ok) correct++;
+      });
+      scoreEl.textContent = filled ? correct + " von " + rows.length + " richtig" : "";
+      box.dataset.correct = correct;
+      box.dataset.evaluated = filled ? "1" : "";
+    }
+    box.querySelector('[data-action="check"]').addEventListener("click", function () { evaluate(); });
+    box.querySelector('[data-action="reveal"]').addEventListener("click", function () {
+      evaluate();
+      rows.forEach(function (row) { row.classList.add("revealed"); });
+    });
+    box.querySelector('[data-action="reset"]').addEventListener("click", function () {
+      rows.forEach(function (row) {
+        var input = row.querySelector("input");
+        input.value = ""; input.classList.remove("ok", "bad"); row.classList.remove("revealed");
+      });
+      scoreEl.textContent = ""; box.dataset.correct = ""; box.dataset.evaluated = "";
+    });
+  });
+
+  // ---------- Quick-Check ----------
+  document.querySelectorAll(".qc").forEach(function (qc) {
+    var ul = qc.querySelector("ul");
+    var bq = qc.querySelector("blockquote");
+    var items = Array.prototype.slice.call(ul.querySelectorAll("li"));
+    // Antwortreihenfolge bei jedem Laden mischen (Fisher-Yates)
+    for (var k = items.length - 1; k > 0; k--) {
+      var r = Math.floor(Math.random() * (k + 1));
+      var tmp = items[k]; items[k] = items[r]; items[r] = tmp;
+    }
+    var opts = document.createElement("div");
+    opts.className = "opts";
+    var letters = "ABCDEF";
+    items.forEach(function (li, i) {
+      var isCorrect = li.querySelector("b") !== null;
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "opt";
+      b.dataset.correct = isCorrect ? "1" : "0";
+      var inner = li.querySelector("b") ? li.querySelector("b").innerHTML : li.innerHTML;
+      b.innerHTML = '<span class="pre">' + letters[i] + "</span><span>" + inner + "</span>";
+      opts.appendChild(b);
+    });
+    var fb = document.createElement("div");
+    fb.className = "fb";
+    var expl = bq ? bq.innerHTML : "";
+    ul.replaceWith(opts);
+    if (bq) bq.replaceWith(fb); else qc.appendChild(fb);
+
+    var btns = opts.querySelectorAll(".opt");
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        btns.forEach(function (x) { x.disabled = true; });
+        var ok = b.dataset.correct === "1";
+        if (ok) {
+          b.classList.add("correct");
+          fb.className = "fb ok";
+          fb.innerHTML = "<b>Richtig.</b> " + expl;
+        } else {
+          b.classList.add("wrong");
+          btns.forEach(function (x) { if (x.dataset.correct === "1") x.classList.add("correct", "dim"); });
+          fb.className = "fb no";
+          fb.innerHTML = "<b>Leider nicht.</b> " + expl;
+        }
+        qc.dataset.answered = "1";
+        qc.dataset.ok = ok ? "1" : "0";
+      });
+    });
+    qc.reset = function () {
+      btns.forEach(function (x) { x.disabled = false; x.classList.remove("correct", "wrong", "dim"); });
+      fb.className = "fb"; fb.innerHTML = "";
+      delete qc.dataset.answered; delete qc.dataset.ok;
+    };
+  });
+
+  // ---------- Auswertung ----------
+  function count(part) {
+    var all = document.querySelectorAll('.qc[data-part="' + part + '"]');
+    var ok = 0;
+    all.forEach(function (q) { if (q.dataset.ok === "1") ok++; });
+    return { ok: ok, total: all.length };
+  }
+  document.getElementById("btn-eval").addEventListener("click", function () {
+    var a = count("a"), b = count("b");
+    var pred = document.getElementById("predict-a");
+    var predRows = pred.querySelectorAll(".predict-row").length;
+    // Vorhersagen ggf. still auswerten
+    pred.querySelector('[data-action="check"]').click();
+    var c = { ok: parseInt(pred.dataset.correct || "0", 10), total: predRows };
+    var ok = a.ok + b.ok + c.ok, total = a.total + b.total + c.total;
+    var pct = Math.round(100 * ok / total);
+    document.getElementById("score-n").textContent = ok + " / " + total;
+    document.getElementById("score-p").textContent = pct + " %";
+    document.getElementById("bd-a").textContent = a.ok + " / " + a.total;
+    document.getElementById("bd-b").textContent = b.ok + " / " + b.total;
+    document.getElementById("bd-c").textContent = c.ok + " / " + c.total;
+    var v;
+    if (pct >= 85) v = "Die Lernziele von VL02 und VL02.1 sind erreicht. Weiter mit den Karel-Aufgaben und VL03.";
+    else if (pct >= 60) v = "Grundlagen sitzen, einzelne Lücken bleiben. Die rot markierten Fragen noch einmal mit den Folien durchgehen; die Taschenrechner-Beispiele lassen sich in der Online-Shell nachrechnen.";
+    else v = "Die Inhalte sind noch nicht gefestigt. Empfehlung: Folien VL02 (Blatt 9–21) und VL02.1 (Blatt 5–12) erneut durcharbeiten, Taschenrechner-Beispiele Schritt für Schritt von Hand nachvollziehen, dann das Quiz wiederholen.";
+    document.getElementById("verdict").textContent = v;
+    document.getElementById("ergebnis").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  document.getElementById("btn-reset-all").addEventListener("click", function () {
+    document.querySelectorAll(".qc").forEach(function (q) { if (q.reset) q.reset(); });
+    document.querySelectorAll('.predict [data-action="reset"]').forEach(function (b) { b.click(); });
+    document.querySelectorAll(".gap-ex .btn.outline").forEach(function (b) { b.click(); });
+    document.querySelectorAll(".flip").forEach(function (f) { f.classList.remove("flipped"); });
+    document.querySelectorAll(".case .solution").forEach(function (s) { s.classList.remove("show"); });
+    document.querySelectorAll(".case .btn").forEach(function (b) { b.textContent = "Lösung anzeigen"; });
+    document.getElementById("score-n").textContent = "–";
+    document.getElementById("score-p").textContent = "noch nicht ausgewertet";
+    ["bd-a", "bd-b", "bd-c"].forEach(function (i) { document.getElementById(i).textContent = "–"; });
+    document.getElementById("verdict").textContent = "";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+})();
+</script>
+</body>
+</html>
